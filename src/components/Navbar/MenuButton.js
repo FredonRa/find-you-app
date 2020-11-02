@@ -4,7 +4,6 @@ import styled from "styled-components";
 const MenuButtonWrapper = styled.button`
   border: none;
   box-shadow: 0px 0px 1px rgb(50, 50, 50);
-  margin: auto;
 
   @media only screen and (min-width: 624px) {
     display: none;

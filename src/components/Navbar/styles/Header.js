@@ -8,6 +8,10 @@ export const HeaderWrapper = styled.header`
   background: #7579e7;
   -webkit-box-shadow: 0px 12px 10px -6px #000000; 
   box-shadow: 0px 11px 14px -10px #000000;
+  position: fixed;
+  z-index: 100;
+  top: 0; 
+  width: 100%;
 `;
 
 export const HeaderTitulo = styled.header `
