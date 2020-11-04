@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import './css/index.css';
+import './assets/index.css';
 import App from './App';
 
 ReactDOM.render(
-    <App />,
+  <Fragment>
+    <App />
+  </Fragment>,
   document.getElementById('root')
 );
-
-
