@@ -1,8 +1,10 @@
 import React from 'react';
 import {AppBar, makeStyles, Toolbar, Typography, IconButton, Button, Hidden} from '@material-ui/core'
+import Image from 'material-ui-image'
 import theme from '../TemaConfig'
 import MenuIcon from '@material-ui/icons/Menu';
 import indigo from '@material-ui/core/colors/indigo'
+import logo23 from './logo23.png'
 
 const colorIndigo = indigo[600]
 
@@ -17,6 +19,10 @@ const useStyles = makeStyles (theme => ({
     title: {
         flexGrow: 1
     },
+    logo: {
+        width: '30px',
+        marginRight: '10px',
+    }
     // appBar: {
 
     // }
@@ -37,6 +43,8 @@ const Navbar = (props) => {
                     >
                         <MenuIcon  />
                     </IconButton>
+
+                    <img src={logo23} alt="" className={classes.logo}/>
                     <Typography variant="h6" className={classes.title}>
                         Find You
                     </Typography>
