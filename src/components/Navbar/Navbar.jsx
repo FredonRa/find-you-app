@@ -5,6 +5,7 @@ import theme from '../TemaConfig'
 import MenuIcon from '@material-ui/icons/Menu';
 import indigo from '@material-ui/core/colors/indigo'
 import logo23 from './logo23.png'
+import {Link} from "react-router-dom";
 
 const colorIndigo = indigo[600]
 
@@ -22,7 +23,16 @@ const useStyles = makeStyles (theme => ({
     logo: {
         width: '30px',
         marginRight: '10px',
-    }
+    },
+    Link: {
+        textDecoration: 'none',
+        color: 'white',
+        '&:hover': {
+            transition: 'color 0.2s linear 0.3s',
+            color: '#e8e8e8',
+        }
+    },
+    
     // appBar: {
 
     // }
@@ -49,12 +59,12 @@ const Navbar = (props) => {
                         Find You
                     </Typography>
                     <Hidden xsDown>
-                        <Button variant="text" color="inherit">Home</Button>
-                        <Button variant="text" color="inherit">Desaparecidos</Button>
-                        <Button variant="text" color="inherit">About US</Button>
+                        <Button variant="text" color="inherit"><Link className={classes.Link} >Home</Link></Button>
+                        <Button variant="text" color="inherit"><Link className={classes.Link}>Desaparecidos</Link></Button>
+                        <Button variant="text" color="inherit"><Link className={classes.Link}>About US</Link></Button>
                         {/* <Button variant="text" color="inherit">¿Qué hacer?</Button> */}
                     </Hidden>
-                    <Button variant="text" color="inherit">Login</Button>
+                    <Button variant="text" color="inherit"><Link className={classes.Link} to="/sing-in">Iniciar Sesión</Link></Button>
                 </Toolbar>
             </AppBar>
             <div className={classes.offset} />

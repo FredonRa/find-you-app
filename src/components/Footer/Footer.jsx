@@ -30,8 +30,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     minHeight: '100vh',
     justifyContent: 'center',
+
     '& .MuiTextField-root': {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2),
         width: '25ch',
       },
   },
@@ -103,15 +104,12 @@ const useStyles = makeStyles((theme) => ({
     containerEmail: {
       display: 'flex',
       justifyContent: 'center',
-      // backgroundColor: 'pink',
-      
     }
 
 }));
 
 export default function StickyFooter() {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <footer className={classes.footer}>

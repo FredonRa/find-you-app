@@ -5,12 +5,12 @@ const OcultarNavbar = (props) => {
     return ( 
         <div>
 
-        <Typography variant="h6" color="initial">
+        {/* <Typography variant="h6" color="initial">
             Ancho: {props.width}
         </Typography>
         <Hidden smUp>
             <Button>xs</Button>
-        </Hidden>
+        </Hidden> */}
         </div>
      );
 }
