@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(2),
         width: '25ch',
       },
+      [theme.breakpoints.up('md')] : {
+        minHeight: '60vh',
+    }
   },
   main: {
     marginTop: theme.spacing(8),

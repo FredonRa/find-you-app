@@ -1,11 +1,13 @@
 import React from 'react';
-import {AppBar, makeStyles, Toolbar, Typography, IconButton, Button, Hidden} from '@material-ui/core'
+import {AppBar, makeStyles, Toolbar, Typography, IconButton, Button, Hidden, Drawer} from '@material-ui/core'
 import Image from 'material-ui-image'
 import theme from '../TemaConfig'
 import MenuIcon from '@material-ui/icons/Menu';
 import indigo from '@material-ui/core/colors/indigo'
 import logo23 from './logo23.png'
 import {Link} from "react-router-dom";
+import TemporaryDrawer from './Drawer';
+
 
 const colorIndigo = indigo[600]
 
@@ -45,26 +47,30 @@ const Navbar = (props) => {
         <div>
             <AppBar position="fixed" color='primary'>
                 <Toolbar>
-                    <IconButton 
+                    {/* <IconButton 
                         className={classes.boton} 
                         aria-label="menu" 
                         color="inherit"
                         onClick={()=> props.accionAbrir()}
                     >
                         <MenuIcon  />
-                    </IconButton>
+                    
+                    </IconButton> */}
+                    
+                    <TemporaryDrawer/>
+                    
 
                     <img src={logo23} alt="" className={classes.logo}/>
                     <Typography variant="h6" className={classes.title}>
                         Find You
                     </Typography>
                     <Hidden xsDown>
-                        <Button variant="text" color="inherit"><Link className={classes.Link} >Home</Link></Button>
-                        <Button variant="text" color="inherit"><Link className={classes.Link}>Desaparecidos</Link></Button>
-                        <Button variant="text" color="inherit"><Link className={classes.Link}>About US</Link></Button>
+                        <Button variant="text" color="inherit"><Link className={classes.Link} to="/">Home</Link></Button>
+                        <Button variant="text" color="inherit"><Link className={classes.Link} to="/missing">Desaparecidos</Link></Button>
+                        <Button variant="text" color="inherit"><Link className={classes.Link} to="/about-us">About US</Link></Button>
                         {/* <Button variant="text" color="inherit">¿Qué hacer?</Button> */}
                     </Hidden>
-                    <Button variant="text" color="inherit"><Link className={classes.Link} to="/sing-in">Iniciar Sesión</Link></Button>
+                    <Button variant="text" color="inherit"><Link className={classes.Link} to="/login">Iniciar Sesión</Link></Button>
                 </Toolbar>
             </AppBar>
             <div className={classes.offset} />
