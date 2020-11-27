@@ -16,7 +16,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import InfoIcon from '@material-ui/icons/Info';
 import theme from '../TemaConfig'
-import { Hidden } from '@material-ui/core';
+import { Hidden, IconButton} from '@material-ui/core';
 
 const useStyles = makeStyles({
   list: {
@@ -119,7 +119,7 @@ export default function TemporaryDrawer() {
       <div className={classes.containerHamburger}>
         {['left'].map((anchor) => (
           <React.Fragment key={anchor}>
-            <iconButton onClick={toggleDrawer(anchor, true)}><MenuIcon aria-label="menu" color="inherit" /></iconButton>
+            <IconButton onClick={toggleDrawer(anchor, true)}><MenuIcon aria-label="menu" color="inherit" /></IconButton>
             <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
               {list(anchor)}
             </Drawer>

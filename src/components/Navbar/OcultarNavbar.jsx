@@ -1,5 +1,5 @@
 import React from 'react';
-import {withWidth, Typography, Button, Hidden} from '@material-ui/core';
+import {withWidth,} from '@material-ui/core';
 
 const OcultarNavbar = (props) => {
     return ( 

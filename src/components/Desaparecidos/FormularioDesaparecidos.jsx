@@ -2,8 +2,7 @@ import { Container } from '@material-ui/core';
 import React, {useState} from 'react';
 import {makeStyles, TextField, Grid, Button, Typography, } from '@material-ui/core';
 import {db} from '../firebase'
-
-
+import storage from '../firebase'
 
 const useStyles = makeStyles((theme) => ({
     containerForm: {
@@ -40,6 +39,8 @@ const FormularioDesaparecidos = () => {
     const [age, setAge] = useState('');
     const [descripcion, setDescripcion] = useState('')
     const [sexo, setSexo] = useState('');
+    const [Imagen, setImagen] = useState(null);
+    const [url, setUrl] = useState('')
 
     const handleChangeNombre = (e) => {
         setNombre(e.target.value)
@@ -70,6 +71,10 @@ const FormularioDesaparecidos = () => {
         setSexo(e.target.value)
         console.log(sexo)
     }
+
+    const changeImagen = e => {
+        setImagen(e.target.files[0]);
+    }
     
     const sexoPesona = [
         {
@@ -98,9 +103,34 @@ const FormularioDesaparecidos = () => {
             apodo: apodo,
             edad: age,
             descripcion: descripcion,
-            sexo: sexo
+            sexo: sexo,
+            foto: url
         })
-      }
+    }
+
+    const uploadImage = async () => {
+        const uploadTask = storage.ref(`images/${Imagen.name}`).put(Imagen)
+        uploadTask.on(
+            'state_changed',
+            snapshot =>{},
+            error =>{
+                console.log(error);
+            },
+            () => {
+                storage
+                    .ref('images')
+                    .child(Imagen.name)
+                    .getDownloadURL()
+                    .then(url => {
+                        setUrl(url)
+                        let urlImagenPersona = url;   
+                        console.log(urlImagenPersona)
+                    })
+            }
+        )
+    
+    };
+
     
 
 
@@ -201,9 +231,22 @@ const FormularioDesaparecidos = () => {
                         ))}
                     </TextField>
                 </Grid>
-                <Grid>
+                
+                <Grid item xs={12}>
+                <aside id="modal" className="modal">
+                    <div className="content-modal">
+                        <header>
+                            <input type="file" onChange={changeImagen} />
+                        </header>
+                    </div>
+                </aside>                          
+                </Grid>
+
+                <Grid >
                     <button onClick={nuevoRegistro}>Añadir registro</button>
-                </Grid>            
+                    <button onClick={uploadImage} >GUARDAR</button>
+                </Grid>
+
             </Grid>   
         </Container>
      );
