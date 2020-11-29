@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {db} from '../firebase'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -9,17 +9,19 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { Grid } from '@material-ui/core';
+import { Grid, Container } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
   },
   media: {
-    height: 140,
+    height: 250,
   },
   gridDesaparecidos: {
-      backgroundColor: 'pink',
+    //   backgroundColor: 'pink',
       display: 'flex',
       justifyContent: 'center'
   },
@@ -28,14 +30,31 @@ const useStyles = makeStyles({
       marginTop: '20px'
   },
   gridButton: {
-      backgroundColor: 'blue',
-      marginTop:'20px'
+    //   backgroundColor: 'blue',
+      marginTop:'25px',
+      display: 'flex',
+      justifyContent: 'center'
+  },
+  containerProgress:{
+    display:'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh'
+  },
+  Link: {
+    textDecoration: 'none',
+    color: 'white'
+  },
+  containerAviso: {
+    display: 'flex',
+    justifyContent: 'center',
   }
 });
 
 const Desparecidos = () => {
     const classes = useStyles();
     const [desaparecido, setDesaparecido] = useState([]);
+    const [pending, setPending] = useState(true);
 
     useEffect(()=>{
         db.collection("desaparecidos")
@@ -46,18 +65,23 @@ const Desparecidos = () => {
     
           })
           setDesaparecido([...data])        
+          setPending(false)
         })
       });
+
+    const handleClick = () =>{
+      <Redirect to="/"></Redirect>
+    }
     
       const ListaDesaparecidos = desaparecido.length ? desaparecido.map((desaparecido, index)=>{
         return (
-            <Grid xs="8" sm="6" md="4" className={classes.gridDesaparecidos}>
+            <Grid xs="12" sm="6" md="4" className={classes.gridDesaparecidos}>
                 <Card className={classes.Card}>
                     <CardActionArea>
                         <CardMedia
                         className={classes.media}
-                        image="/static/images/cards/contemplative-reptile.jpg"
-                        title="Contemplative Reptile"
+                        image={desaparecido.foto}
+                        onClick={handleClick}
                         />
                         <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
@@ -69,6 +93,7 @@ const Desparecidos = () => {
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
+                    {/* <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button&size=small&width=89&height=20&appId" width="89" height="20"  scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe> */}
                         <Button size="small" color="primary">
                         Share
                         </Button>
@@ -78,25 +103,24 @@ const Desparecidos = () => {
                     </CardActions>
                     </Card>
                 </Grid>
-        //   <ul key={index}>
-        //     <li>Nombre: {desaparecido.nombre}</li>
-        //     <li>Apellido: {desaparecido.apellido}</li>
-        //     <li>Descripcion: {desaparecido.descripcion}</li>    
-        //   </ul>
         ) 
-      }) : <li>No hay usuarios nuevos</li> ;
-
-
+    }) : <Container className={classes.containerAviso}><h3>No hay Desaparecidos cargados</h3> </Container>
+    
+    if(pending){
+        return <Container className={classes.containerProgress}>
+                  <CircularProgress/>
+              </Container>
+    }
     return ( 
-        <Grid container spacing={3} >
+        <Grid container spacing={2} >
             <Grid xs="12" className={classes.gridButton}>
-                <Link to="/missing/form">
-                    Reportar un desaparecido
-                </Link>
-            </Grid>
-            
-                {ListaDesaparecidos}
-            
+                <Button variant="contained" color="primary">
+                    <Link to="/missing/form" className={classes.Link}>
+                        Reportar un desaparecido
+                    </Link>
+                </Button>
+            </Grid>            
+            {ListaDesaparecidos}
         </Grid>
     );
 }

@@ -24,6 +24,10 @@ const useStyles = makeStyles ((theme) => ({
         backgroundPosition: 'center', 
         backgroundSize: 'cover', 
         backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'center',
+        flexDirection: 'column'
     },
     containerPhoto2: {
         backgroundColor: 'black',
@@ -35,9 +39,12 @@ const useStyles = makeStyles ((theme) => ({
         backgroundPosition: 'center',
         display: 'flex',
         justifyContent: 'center',
+        textAlign: 'center',
+        
         
     },
     Carousel: {
+        width: '100%',
         height: '500px',
         backgroundColor: 'pink',
     },
@@ -53,17 +60,23 @@ const useStyles = makeStyles ((theme) => ({
         textDecoration: 'none',
         color: 'black',
         border: '3px',
+    },
+    LinkMasInfo: {
+        textDecoration: 'none',
+        color: 'white',
+    },
+    textoFoto: {
+        color: 'white'
     }
 }))
  
 function Carrusel(props){
     const classes = useStyles()
-    const description = "Probably the most random \n thing you have ever seen!";
+    const description = "Reporta un desaparecido";
     var items = [
         {
             route: '/',
             name: <div>hola</div>,
-            description: "Probably the most random thing you have ever seen!",
             content: 
             <Grid container>
                <Grid item sm={12} className={classes.Grid}> <Container className={classes.containerPhoto2}><Typography variant='h2' >Ayudanos a encontrarte</Typography></Container></Grid>
@@ -74,10 +87,9 @@ function Carrusel(props){
         {
             route: '/',
             name: <div>hola</div>,
-            description: "Probably the most random \n thing you have ever seen!",
             content: 
             <Grid container>
-               <Grid item sm={12} className={classes.Grid}> <Container className={classes.containerPhoto}><Typography variant='h2'> {description} </Typography></Container></Grid>
+               <Grid item sm={12} className={classes.Grid}> <Container className={classes.containerPhoto}><Typography variant='h3' color="light" className={classes.textoFoto}>Reporta un desaparecido</Typography><Button variant="contained" color="primary"><Link to="/missing" className={classes.LinkMasInfo}>Mas información</Link></Button></Container></Grid>
             </Grid>
             
         },

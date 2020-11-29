@@ -22,6 +22,8 @@ import { AuthProvider } from "./components/Auth";
 import PrivateRoute from "./components/PrivateRoute";
 import Desaparecidos from './components/Desaparecidos/Desaparecidos'
 import FormularioDesaparecidos from './components/Desaparecidos/FormularioDesaparecidos'
+import DemoAPI from './components/DemoAPI';
+import ConsumirAPI from './components/ConsumirAPI';
 
 
 function App() {
@@ -36,6 +38,7 @@ function App() {
             <Route exact path="/login"  component={Login}/>
             <Route exact path="/signup"  component={SignUp}/>
             <Route exact path="/missing" component={Desaparecidos}/>
+            <Route exact path="/DemoAPI" component={ConsumirAPI}/>
           </div>
         </Router>
       </AuthProvider>

@@ -89,7 +89,6 @@ const SignUp = ({ history }) => {
           <Link to="/login" className={classes.Link}>¿Ya tenes cuenta? Click aquí</Link>
         </Container>
       </form>
-      
     </Container>
       
   );
