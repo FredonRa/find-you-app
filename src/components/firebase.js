@@ -4,13 +4,13 @@ import 'firebase/firestore'
 import "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyCgwlJO2fEXCTLjm3ViW2-3UYQpevkWyqw",
+    authDomain: "app-react-comit.firebaseapp.com",
+    databaseURL: "https://app-react-comit.firebaseio.com",
+    projectId: "app-react-comit",
+    storageBucket: "app-react-comit.appspot.com",
+    messagingSenderId: "946623724982",
+    appId: "1:946623724982:web:9c4eaf3b8ce76c6e6a1517"
 };
 
 firebase.initializeApp(firebaseConfig);
