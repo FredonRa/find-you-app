@@ -51,10 +51,10 @@ const useStyles = makeStyles ((theme) => ({
     Grid: {
         position: 'relative',
         backgroundColor: 'pink',
-        '&:hover': {
-            transition: 'opacity .1s linear .3s',
-            opacity: '70%',  
-        }     
+        // '&:hover': {
+        //     transition: 'opacity .1s linear .3s',
+        //     opacity: '70%',  
+        // }     
     },
     Link: {
         textDecoration: 'none',

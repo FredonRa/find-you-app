@@ -37,7 +37,15 @@ const useStyles = makeStyles (theme => ({
     LinkMenu: {
         textDecoration: 'none',
         color: 'black'
-    }
+    },
+    Avatar: {
+        width: '35px',
+        height: '35px'
+    },
+    // containerAvatar: {
+    //     backgroundColor: 'black',
+    //     height: '50px'
+    // }
     
 }))
 
@@ -66,10 +74,9 @@ const Navbar = (props) => {
                 let user = firebaseConfig.authentication.currentUser;
                 if(user) {
                     return(
-                            
-                            <div>
+                            <div className={classes.containerAvatar}>
                             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                <Avatar>U</Avatar>
+                                <Avatar className={classes.Avatar}>U</Avatar>
                             </Button>
                             <Menu
                               id="simple-menu"

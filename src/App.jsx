@@ -24,6 +24,7 @@ import Desaparecidos from './components/Desaparecidos/Desaparecidos'
 import FormularioDesaparecidos from './components/Desaparecidos/FormularioDesaparecidos'
 import DemoAPI from './components/DemoAPI';
 import ConsumirAPI from './components/ConsumirAPI';
+import AboutUs from './components/AboutUs/AboutUs';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route exact path="/signup"  component={SignUp}/>
             <Route exact path="/missing" component={Desaparecidos}/>
             <Route exact path="/DemoAPI" component={ConsumirAPI}/>
+            <Route exact path="/about-us" component={AboutUs}/>
           </div>
         </Router>
       </AuthProvider>
