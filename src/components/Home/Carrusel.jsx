@@ -1,13 +1,12 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
-import {colors, Grid, Paper, Typography} from '@material-ui/core'
+import { Grid, Paper, Typography} from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import hug3 from './hug3.jpg';
 import hug2 from './hug2.jpg'
 import {Link} from 'react-router-dom';
-import { BorderColor } from '@material-ui/icons';
 
 
 
@@ -72,11 +71,9 @@ const useStyles = makeStyles ((theme) => ({
  
 function Carrusel(props){
     const classes = useStyles()
-    const description = "Reporta un desaparecido";
     var items = [
         {
             route: '/',
-            name: <div>hola</div>,
             content: 
             <Grid container>
                <Grid item sm={12} className={classes.Grid}> <Container className={classes.containerPhoto2}><Typography variant='h2' >Ayudanos a encontrarte</Typography></Container></Grid>
@@ -86,10 +83,9 @@ function Carrusel(props){
 
         {
             route: '/',
-            name: <div>hola</div>,
             content: 
             <Grid container>
-               <Grid item sm={12} className={classes.Grid}> <Container className={classes.containerPhoto}><Typography variant='h3' color="light" className={classes.textoFoto}>Reporta un desaparecido</Typography><Button variant="contained" color="primary"><Link to="/missing" className={classes.LinkMasInfo}>Mas información</Link></Button></Container></Grid>
+               <Grid item sm={12} className={classes.Grid}> <Container className={classes.containerPhoto}><Typography variant='h3' className={classes.textoFoto}>Reporta un desaparecido</Typography><Link to="/missing" className={classes.LinkMasInfo}><Button variant="contained" color="primary">Mas información</Button></Link></Container></Grid>
             </Grid>
             
         },

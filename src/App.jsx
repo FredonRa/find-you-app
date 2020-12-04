@@ -1,5 +1,4 @@
 import './assets/App.css';
-import Button from '@material-ui/core/Button'
 import {ThemeProvider} from '@material-ui/core/styles'
 import theme from './components/TemaConfig'
 import Navbar from './components/Navbar/Navbar'
@@ -7,9 +6,7 @@ import OcultarNavbar from './components/Navbar/OcultarNavbar';
 import StickyFooter from './components/Footer/Footer';
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Link
 } from "react-router-dom";
 // import SignIn from './components/Sign-in/SingIn';
 // import SingUp from './components/Sing-up/SingUp'
@@ -22,9 +19,9 @@ import { AuthProvider } from "./components/Auth";
 import PrivateRoute from "./components/PrivateRoute";
 import Desaparecidos from './components/Desaparecidos/Desaparecidos'
 import FormularioDesaparecidos from './components/Desaparecidos/FormularioDesaparecidos'
-import DemoAPI from './components/DemoAPI';
 import ConsumirAPI from './components/ConsumirAPI';
 import AboutUs from './components/AboutUs/AboutUs';
+import DemoUsuario from './components/DemoUsuario';
 
 
 function App() {
@@ -41,6 +38,7 @@ function App() {
             <Route exact path="/missing" component={Desaparecidos}/>
             <Route exact path="/DemoAPI" component={ConsumirAPI}/>
             <Route exact path="/about-us" component={AboutUs}/>
+            <Route exact path="/DemoUsuario" component={DemoUsuario} />
           </div>
         </Router>
       </AuthProvider>

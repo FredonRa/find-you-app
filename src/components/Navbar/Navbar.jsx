@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {AppBar, makeStyles, Toolbar, Typography, Button, Hidden} from '@material-ui/core'
 import theme from '../TemaConfig'
 import logo23 from './logo23.png'
@@ -46,6 +46,11 @@ const useStyles = makeStyles (theme => ({
     //     backgroundColor: 'black',
     //     height: '50px'
     // }
+    Navbar: {
+        top: '0',
+        position: 'fixed',
+        lineHeight: '0'
+    }
     
 }))
 
@@ -55,7 +60,7 @@ const useStyles = makeStyles (theme => ({
 
 const Navbar = (props) => {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -65,13 +70,18 @@ const Navbar = (props) => {
         setAnchorEl(null);
     };
 
+    const redireccionar = () => {
+        window.location.replace("/")
+    }
+
     function handleSignOut() {
         firebaseConfig.authentication.signOut()
+        setTimeout(redireccionar, 300);
     }
 
             
             const comprobarUsuario = () => {
-                let user = firebaseConfig.authentication.currentUser;
+                const user = firebaseConfig.authentication.currentUser
                 if(user) {
                     return(
                             <div className={classes.containerAvatar}>
@@ -93,44 +103,31 @@ const Navbar = (props) => {
                     )
                 }else {
                     return(
-                        <Link to="/login" className={classes.Link}>Iniciar sesión</Link>
-                    )
-                }       
-            }
-
-    return ( 
+                        <Button><Link to="/login" className={classes.Link}>Iniciar sesión</Link></Button>
+                        )
+                    }       
+                }
+                
+                return ( 
         <div>
-            <AppBar position="fixed" color='primary'>
+            <div className={classes.offset} />
+            <AppBar position="fixed" color='primary'className={classes.Navbar}>
                 <Toolbar>
-                    {/* <IconButton 
-                        className={classes.boton} 
-                        aria-label="menu" 
-                        color="inherit"
-                        onClick={()=> props.accionAbrir()}
-                    >
-                        <MenuIcon  />
-                    
-                    </IconButton> */}
-                    
                     <TemporaryDrawer/>
-                    
-
-                    <img src={logo23} alt="" className={classes.logo}/>
+                        <img src={logo23} alt="logo find you" className={classes.logo}/>
                     <Typography variant="h6" className={classes.title}>
                         Find You
                     </Typography>
                     <Hidden xsDown>
                         <Button variant="text" color="inherit"><Link className={classes.Link} to="/">Home</Link></Button>
                         <Button variant="text" color="inherit"><Link className={classes.Link} to="/missing">Desaparecidos</Link></Button>
-                        <Button variant="text" color="inherit"><Link className={classes.Link} to="/about-us">About US</Link></Button>
+                        <Button variant="text" color="inherit"><Link className={classes.Link} to="/about-us">Sobre nosotros</Link></Button>
                         {/* <Button variant="text" color="inherit">¿Qué hacer?</Button> */}
                     </Hidden>
-                    <Button>{comprobarUsuario()}</Button>
+                    {comprobarUsuario()}
                 {/* <Button variant="text" color="inherit">{!!currentUser ? ():<Link className={classes.Link} to="/login">Iniciar Sesión</Link>}</Button> */}
-                
                 </Toolbar>
             </AppBar>
-            <div className={classes.offset} />
         </div>
      );
 }

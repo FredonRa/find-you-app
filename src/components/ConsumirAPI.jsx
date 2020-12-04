@@ -4,7 +4,6 @@ import {TextField} from '@material-ui/core'
 const ConsumirAPI = () => {
 
     const [provincias, setProvincias] = useState();
-    const [urlMunicipio, setUrlMunicipio] = useState();
     const [municipios, setMunicipios] = useState();
     const [provinciaElegida, setProvinciaElegida] = useState();
     console.log(provinciaElegida)
@@ -66,7 +65,7 @@ const ConsumirAPI = () => {
                     ><option value="">Selecciona una provincia</option>
                         {!provincias ? "Cargando... " : 
                         provincias.provincias.map((provincia, index) => {
-                            const id= `${provincia.id}`
+                            // const id= `${provincia.id}`
                             // console.log(id)
                             return (<option>{provincia.nombre}</option>)
                             

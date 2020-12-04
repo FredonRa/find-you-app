@@ -1,7 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Carrusel from './Carrusel'
-import firebaseConfig from '../firebase'
 import {makeStyles} from '@material-ui/core'
 
 

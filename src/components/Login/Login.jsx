@@ -73,7 +73,6 @@ const Login = ({ history }) => {
           label="Email"
           variant="outlined"
           fullWidth
-          type="text"
           autoComplete="lname"
           required
           autoFocus

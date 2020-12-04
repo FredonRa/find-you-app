@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Container } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import SimpleDialogDemo from './DemoDialog'
 
 const useStyles = makeStyles({
   root: {
@@ -39,13 +39,18 @@ const useStyles = makeStyles({
     display:'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh'
+    height: '90vh'
   },
   Link: {
     textDecoration: 'none',
     color: 'white'
   },
   containerAviso: {
+    margin: '0',
+    padding: '0'
+  },
+  gridContainer: {
+    // backgroundColor: 'pink',
     display: 'flex',
     justifyContent: 'center',
   }
@@ -53,11 +58,11 @@ const useStyles = makeStyles({
 
 const Desparecidos = () => {
     const classes = useStyles();
-    const [desaparecido, setDesaparecido] = useState([]);
+    const [desaparecidos, setDesaparecido] = useState([]);
     const [pending, setPending] = useState(true);
 
     useEffect(()=>{
-        db.collection("desaparecidos")
+        db.collection("desaparecidos-confirmados")
         .onSnapshot((snapshot)=>{
           const data = [];
           snapshot.forEach((doc)=>{
@@ -73,35 +78,31 @@ const Desparecidos = () => {
       <Redirect to="/"></Redirect>
     }
     
-      const ListaDesaparecidos = desaparecido.length ? desaparecido.map((desaparecido, index)=>{
+      const ListaDesaparecidos = desaparecidos.length ? desaparecidos.map((desaparecido, index)=>{
         return (
-            <Grid xs="12" sm="6" md="4" className={classes.gridDesaparecidos}>
-                <Card className={classes.Card}>
-                    <CardActionArea>
-                        <CardMedia
-                        className={classes.media}
-                        image={desaparecido.foto}
-                        onClick={handleClick}
-                        />
-                        <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {desaparecido.nombre} {desaparecido.apellido}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {desaparecido.descripcion}
-                        </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                    {/* <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button&size=small&width=89&height=20&appId" width="89" height="20"  scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe> */}
-                        <Button size="small" color="primary">
-                        Share
-                        </Button>
-                        <Button size="small" color="primary">
-                        Learn More
-                        </Button>
-                    </CardActions>
-                    </Card>
+            <Grid item xs="12" sm="6" md="4" className={classes.gridDesaparecidos}>
+                <Grid container className={classes.gridContainer}>
+                    <Card className={classes.Card}>
+                        <CardActionArea>
+                            <CardMedia
+                            className={classes.media}
+                            image={desaparecido.foto}
+                            onClick={handleClick}
+                            />
+                            <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {desaparecido.nombre} {desaparecido.apellido}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                                Desaparecido desde (fecha de desaparición)
+                            </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                        <CardActions>
+                            <SimpleDialogDemo desaparecidos={desaparecido}/>
+                        </CardActions>
+                      </Card>
+                    </Grid>
                 </Grid>
         ) 
     }) : <Container className={classes.containerAviso}><h3>No hay Desaparecidos cargados</h3> </Container>
@@ -113,7 +114,7 @@ const Desparecidos = () => {
     }
     return ( 
         <Grid container spacing={2} >
-            <Grid xs="12" className={classes.gridButton}>
+            <Grid item xs="12" className={classes.gridButton}>
                 <Button variant="contained" color="primary">
                     <Link to="/missing/form" className={classes.Link}>
                         Reportar un desaparecido
