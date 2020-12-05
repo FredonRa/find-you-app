@@ -18,6 +18,9 @@ const useStyle = makeStyles(() => ({
         padding: '10px',
         boxShadow: '2px 2px 8px 2px rgba(0, 0, 0, 0.4)',
         borderRadius: '22px'
+    },
+    titulo: {
+        textAlign: 'center'
     }
 }))
 
@@ -39,8 +42,9 @@ const Usuario = () => {
         })
     });
 
-    const ListaDatos = datos.length ? datos.map((dato, index)=>{
 
+
+    const ListaDatos = datos.length ? datos.map((dato, index)=>{
         if(emailUsuario === dato.emailUsuario) {
             return (
                 <Grid item xs={12} sm={6} md={4} className={classes.gridDesaparecidos}>
@@ -70,6 +74,9 @@ const Usuario = () => {
 
     return ( 
         <Grid container>
+            <Grid item xs={12} className={classes.titulo}>
+                <Typography variant="h5">Personas cargadas</Typography>
+            </Grid>
             {ListaDatos}
         </Grid>
     );

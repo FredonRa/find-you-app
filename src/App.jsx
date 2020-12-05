@@ -23,6 +23,7 @@ import ConsumirAPI from './components/Desaparecidos/ConsumirAPI';
 import AboutUs from './components/AboutUs/AboutUs';
 import DemoUsuario from './components/DemoUsuario';
 import Usuario from './components/Usuario/Usuario';
+import DemoEditarDocumento from './components/DemoEditarDocumento';
 
 
 function App() {
@@ -40,7 +41,8 @@ function App() {
             <Route exact path="/DemoAPI" component={ConsumirAPI}/>
             <Route exact path="/about-us" component={AboutUs}/>
             <Route exact path="/DemoUsuario" component={DemoUsuario} />
-            <Route exact path="/Usuario" component={Usuario}/>
+            <Route exact path="/user" component={Usuario}/>
+
           </div>
         </Router>
       </AuthProvider>

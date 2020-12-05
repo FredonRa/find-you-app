@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {AppBar, makeStyles, Toolbar, Typography, Button, Hidden} from '@material-ui/core'
+import React, {useState, useEffect} from 'react';
+import {AppBar, makeStyles, Toolbar, Typography, Button, Hidden, Grid} from '@material-ui/core'
 import theme from '../TemaConfig'
 import logo23 from './logo23.png'
 import {Link} from "react-router-dom";
@@ -8,6 +8,8 @@ import firebaseConfig from "../firebase";
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
+import {db} from '../firebase'
+import Divider from '@material-ui/core/Divider';
 
 
 
@@ -61,6 +63,10 @@ const useStyles = makeStyles (theme => ({
 const Navbar = (props) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [datos, setDatos] = useState([]);
+    const [emailUsuario, setEmailUsuario] = useState("");
+    const [usuario, setUsuario] = useState(false);
+    const [inicialUsuario, setInicialUsuario] = useState("")
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -70,21 +76,52 @@ const Navbar = (props) => {
         setAnchorEl(null);
     };
 
-    const redireccionar = () => {
-        window.location.replace("/")
-    }
-
     function handleSignOut() {
         firebaseConfig.authentication.signOut()
-        setTimeout(redireccionar, 300);
     }
+
+    firebaseConfig.authentication.onAuthStateChanged(function(user) {
+        setUsuario(user);
+        if (user) {
+            setEmailUsuario(user.email);
+        }
+    });
+
+    
+    useEffect(()=>{
+        db.collection("usuarios")
+        .onSnapshot((snapshot)=>{
+          const data = [];
+          snapshot.forEach((doc)=>{
+            data.push(doc.data());
+          })
+          setDatos([...data])        
+        })
+    });
+
+    const ListaDatos = datos.length ? datos.map((dato, index)=>{
+
+        if( emailUsuario === dato.email ) { 
+            // const {nombre} = dato;
+            // setInicialUsuario(nombre.charAt(0))
+            // const inicial = nombre.charAt(0)
+            // setInicialUsuario(inicial)
+            // console.log(inicial)
+            return (
+                    <>
+                        {dato.nombre} {dato.apellido}
+                    </>
+            )
+        }
+        
+    }) : <h1>Cargando..</h1> 
 
             
             const comprobarUsuario = () => {
-                const user = firebaseConfig.authentication.currentUser
-                if(user) {
+                if(usuario) {
                     return(
                             <div className={classes.containerAvatar}>
+                                
                             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                                 <Avatar className={classes.Avatar}>U</Avatar>
                             </Button>
@@ -95,9 +132,10 @@ const Navbar = (props) => {
                               open={Boolean(anchorEl)}
                               onClose={handleClose}
                             >
-                              <MenuItem onClick={handleClose}>Profile</MenuItem>
-                              <MenuItem onClick={handleClose}>My account</MenuItem>
-                              <MenuItem onClick={handleClose, handleSignOut}><Link to="/login" className={classes.LinkMenu}>Logout</Link></MenuItem>
+                              <MenuItem onClick={handleClose}>{ListaDatos}</MenuItem>
+                              <Divider />
+                              <MenuItem onClick={handleClose}><Link to="/user" className={classes.LinkMenu}>Mi cuenta</Link></MenuItem>
+                              <MenuItem onClick={handleClose, handleSignOut}><Link to="/login" className={classes.LinkMenu}>Cerrar sesión</Link></MenuItem>
                             </Menu>
                           </div>
                     )
