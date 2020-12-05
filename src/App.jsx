@@ -22,6 +22,7 @@ import FormularioDesaparecidos from './components/Desaparecidos/FormularioDesapa
 import ConsumirAPI from './components/Desaparecidos/ConsumirAPI';
 import AboutUs from './components/AboutUs/AboutUs';
 import DemoUsuario from './components/DemoUsuario';
+import Usuario from './components/Usuario/Usuario';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route exact path="/DemoAPI" component={ConsumirAPI}/>
             <Route exact path="/about-us" component={AboutUs}/>
             <Route exact path="/DemoUsuario" component={DemoUsuario} />
+            <Route exact path="/Usuario" component={Usuario}/>
           </div>
         </Router>
       </AuthProvider>

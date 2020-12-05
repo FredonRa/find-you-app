@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {makeStyles, TextField, Grid, Button, Typography, } from '@material-ui/core';
 import {db} from '../firebase'
 import {storage} from '../firebase'
-
+import firebaseConfig from '../firebase'
 import ConsumirAPI from './ConsumirAPI'
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
         width: '100%', 
         // backgroundColor: 'pink'
     },
+    containerFormP3: {
+        width: '80%',
+        // backgroundColor: 'black'
+    },
     containerSubmit: {
         display: 'flex',
         justifyContent: 'center',
@@ -68,6 +72,7 @@ const FormularioDesaparecidos = () => {
     const [fechaDesaparicion, setFechaDesaparicion] = useState("")
     const [provincia, setProvincia] = useState('')
     const [zona, setZona] = useState('')
+    const [emailUsuario, setEmailUsuario] = useState('')
     
 
     const handleChangeNombre = (e) => {
@@ -113,6 +118,12 @@ const FormularioDesaparecidos = () => {
         setZona(e.target.value)
     }
 
+    firebaseConfig.authentication.onAuthStateChanged(function(user) {
+        if (user) {
+            setEmailUsuario(user.email);
+        }
+    });
+
     const sexoPesona = [
         {
             value: null,
@@ -145,6 +156,7 @@ const FormularioDesaparecidos = () => {
         const fechaRegistro = `${numeroDia}/${mes}/${año} ${hora}:${minuto}:${segundo}`
 
         db.collection('desaparecidos').add({
+            emailUsuario: emailUsuario,
             fechaRegistro: fechaRegistro,
             nombre: nombre,
             apellido: apellido,
@@ -316,7 +328,7 @@ const FormularioDesaparecidos = () => {
 
             </Grid>   
 
-            <Grid container spacing={5} className={classes.containerPaso2} id='paso2'>
+            <Grid container spacing={5} className={classes.grid, classes.containerPaso2} id='paso2'>
                 <Grid item xs={12} >
                     <Button onClick={handleAtras} variant="contained" color="secondary">Atras</Button>
                 </Grid>
@@ -335,7 +347,7 @@ const FormularioDesaparecidos = () => {
                 </Grid>
             </Grid>
 
-            <Grid container spacing={5} className={classes.containerPaso2} id='paso3'>
+            <Grid container spacing={5} className={classes.grid, classes.containerPaso2} id='paso3'>
                 <Grid item xs={12} >
                     <Button onClick={handleAtras2} variant="contained" color="secondary">Atras</Button>
                 </Grid>
@@ -346,12 +358,13 @@ const FormularioDesaparecidos = () => {
                     <Typography variant="h6">Cargá la fecha y el lugar en donde desapareció</Typography>
                 </Grid>           
 
-                <Grid item xs={12} className={classes.containerFormP2}>
+                <Grid item xs={12} >
                     <TextField
                         id="date"
                         label="Fecha de desaparición"
                         type="date"
                         defaultValue="2017-05-24"
+                        variant="outlined"
                         fullWidth
                         className={classes.textField}
                         onChange={handleFechaDesaparicion}
@@ -361,7 +374,7 @@ const FormularioDesaparecidos = () => {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} >
                     <ConsumirAPI setProvincia={setProvincia} />
                 </Grid>
                 
