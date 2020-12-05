@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {makeStyles, TextField, Grid, Button, Typography, } from '@material-ui/core';
 import {db} from '../firebase'
 import {storage} from '../firebase'
-import ConsumirAPI from '../ConsumirAPI'
+
+import ConsumirAPI from './ConsumirAPI'
 
 const useStyles = makeStyles((theme) => ({
     containerForm: {
@@ -43,12 +44,14 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         marginTop: '20px'
-
     },
     containerFormP2: {
         display: 'flex',
         justifyContent: 'center',
-
+    },
+    buttonSig: {
+        display: 'flex',
+        justifyContent: 'center',
     }
 }));
 
@@ -62,8 +65,10 @@ const FormularioDesaparecidos = () => {
     const [sexo, setSexo] = useState('');
     const [Imagen, setImagen] = useState(null);
     const [url, setUrl] = useState(null)
+    const [fechaDesaparicion, setFechaDesaparicion] = useState("")
     const [provincia, setProvincia] = useState('')
-    console.log(provincia)
+    const [zona, setZona] = useState('')
+    
 
     const handleChangeNombre = (e) => {
         setNombre(e.target.value)
@@ -95,11 +100,19 @@ const FormularioDesaparecidos = () => {
         // console.log(sexo)
     }
 
-    const changeImagen = e => {
+    const handleFechaDesaparicion = (e) => {
+        setFechaDesaparicion(e.target.value)
+    }
+
+    const changeImagen = (e) => {
         setImagen(e.target.files[0]);
         // console.log(Imagen)
     }
     
+    const handleZona = (e) => {
+        setZona(e.target.value)
+    }
+
     const sexoPesona = [
         {
             value: null,
@@ -140,10 +153,13 @@ const FormularioDesaparecidos = () => {
             descripcion: descripcion,
             sexo: sexo,
             foto: url,
-        })
-        alert("Datos cargados con éxito.")
+            fechaDesaparicion: fechaDesaparicion,
+            provincia: provincia,
+            zona: zona
+        });
+        alert("Datos cargados con éxito.");
         setTimeout(function() {
-            window.location.replace("/missing")
+            window.location.replace("/missing");
         }, 2000)
     }
 
@@ -188,8 +204,13 @@ const FormularioDesaparecidos = () => {
     }
 
     const handleSiguiente2 = () => {
-        document.getElementById('paso1').style.display = 'none'
+        document.getElementById('paso2').style.display = 'none'
+        document.getElementById('paso3').style.display = 'flex'
+    }
+
+    const handleAtras2 = () => {
         document.getElementById('paso2').style.display = 'flex'
+        document.getElementById('paso3').style.display = 'none'
     }
 
     return ( 
@@ -294,6 +315,7 @@ const FormularioDesaparecidos = () => {
                 </Grid>
 
             </Grid>   
+
             <Grid container spacing={5} className={classes.containerPaso2} id='paso2'>
                 <Grid item xs={12} >
                     <Button onClick={handleAtras} variant="contained" color="secondary">Atras</Button>
@@ -308,12 +330,58 @@ const FormularioDesaparecidos = () => {
                 <Grid item xs={12} className={classes.containerFormP2}>
                     <input type="file" name="imagen" onChange={changeImagen} />
                 </Grid>
-                <Grid container>
-
-                
-                <Grid item xs={12} className={classes.containerSubmit}>
-                    <Button type="submit" variant="contained" color="primary" >Añadir registro</Button>
+                <Grid item xs={12} className={classes.buttonSig}>
+                    <Button onClick={handleSiguiente2} variant="contained" color="secondary">Siguiente</Button>
                 </Grid>
+            </Grid>
+
+            <Grid container spacing={5} className={classes.containerPaso2} id='paso3'>
+                <Grid item xs={12} >
+                    <Button onClick={handleAtras2} variant="contained" color="secondary">Atras</Button>
+                </Grid>
+                <Grid item xs ={12} className={classes.containerFormP2}>
+                    <Typography variant="h5">Paso 3</Typography>
+                </Grid>
+                <Grid item xs={12} className={classes.containerFormP2}>
+                    <Typography variant="h6">Cargá la fecha y el lugar en donde desapareció</Typography>
+                </Grid>           
+
+                <Grid item xs={12} className={classes.containerFormP2}>
+                    <TextField
+                        id="date"
+                        label="Fecha de desaparición"
+                        type="date"
+                        defaultValue="2017-05-24"
+                        fullWidth
+                        className={classes.textField}
+                        onChange={handleFechaDesaparicion}
+                        InputLabelProps={{
+                        shrink: true,
+                        }}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ConsumirAPI setProvincia={setProvincia} />
+                </Grid>
+                
+                <Grid item xs={12} >
+                    <TextField
+                    name="zona" 
+                    type="text"
+                    onChange={handleZona}
+                    label="Zona"
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="lname"   
+                    required                
+                    />
+                </Grid>
+
+                <Grid container>
+                    <Grid item xs={12} className={classes.containerSubmit}>
+                        <Button type="submit" variant="contained" color="primary" >Añadir registro</Button>
+                    </Grid>
                 </Grid>
             </Grid>
 

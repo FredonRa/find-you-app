@@ -3,7 +3,7 @@ import {db} from './firebase'
 import firebaseConfig from './firebase'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Grid, Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -24,13 +24,18 @@ const useStyles = makeStyles((theme) => ({
         height: '100vh'
       },
       containerDesaparecido: {
+          width: '90%',
           backgroundColor: 'pink',
           borderRadius: '20px',
-          marginBottom: '20px',
+          boxShadow: '2px 2px 2px 1px rgba(0, 0, 0, 0.2)',
+          marginTop: '10px'
       },
       accordionFoto: {
           display: 'flex',
           justifyContent: 'center',
+      },
+      containerLista: {
+
       }
 }))
 
@@ -98,39 +103,59 @@ const DemoUsuario = () => {
                 descripcion: `${persona.descripcion}`,
                 sexo: `${persona.sexo}`,
                 foto: `${persona.foto}`,
+                fechaDesaparicion: `${persona.fechaDesaparicion}`,
+                provincia: `${persona.provincia}`,
+                zona: `${persona.zona}`
+                
             })
             eliminar(persona.id)
             setTimeout(redireccionar, 2000);
         }
         return (
+            
+
+        <Grid item xs={12} sm={6} md={4}>
             <Container className={classes.containerDesaparecido}>
-                       <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Foto del desaparecido</Typography>
-        </AccordionSummary>
-        <AccordionDetails className={classes.accordionFoto}>
-            <img src={persona.foto} alt="foto del 'desaparecido'"/>
-        </AccordionDetails>
-      </Accordion>
-        <Typography>
-            Nombre: {persona.nombre}
-        </Typography>
-        <Typography>
-            Apellido: {persona.apellido}
-        </Typography>
-        <Typography>
-            Descripción: {persona.descripcion}
-        </Typography>                
-                                
-                            
-                            <Button onClick={() => eliminar(persona.id)}>Eliminar</Button>                            
-                            <Button onClick={EnviarRegistro}>Aceptar</Button>
+                <Typography>
+                    Fecha del registro: {persona.fechaRegistro}
+                </Typography>
+                <Accordion>
+                    <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    >
+                    <Typography className={classes.heading}>Foto del desaparecido</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails className={classes.accordionFoto}>
+                        <img src={persona.foto} alt="foto del 'desaparecido'"/>
+                    </AccordionDetails>
+                </Accordion>
+                <Typography>
+                    Fecha de desaparición: {persona.fechaDesaparicion}
+                </Typography>
+                <Typography>
+                    Nombre: {persona.nombre}
+                </Typography>
+                <Typography>
+                    Apellido: {persona.apellido}
+                </Typography>
+                <Typography>
+                    Descripción: {persona.descripcion}
+                </Typography>    
+                <Typography>
+                    Provincia: {persona.provincia}
+                </Typography>   
+                <Typography>
+                    Zona: {persona.zona}
+                </Typography>         
+               
+                <Button onClick={() => eliminar(persona.id)}>Eliminar</Button>                            
+                <Button onClick={EnviarRegistro}>Aceptar</Button>
                             
             </Container>
+        </Grid>
+    
                         
         ) 
     }) : <Container className={classes.containerAviso}><h3>No hay desaparecidos cargados</h3> </Container>
@@ -141,24 +166,24 @@ const DemoUsuario = () => {
         } else if (emailUsuario === dato.email && dato.admin === true) {
             // {setPending(false)}
             return (
-                <div>
-                    <ul>
+                <Grid container spacing={2} className={classes.containerLista}>
+                    {/* <ul>
                         <li>{dato.email}</li>
                         <li>{dato.nombre}</li>
-                    </ul>
+                    </ul> */}
                     {ListaDesaparecidos}
-                </div>
+                </Grid>
                 
             )
         }
         
     }) : <h1>Cargando..</h1> 
 
-    return ( 
-        <div>
+    return (
+        <> 
             {ListaDatos}
-            
-        </div>
+        </> 
+        
     );
 }
  

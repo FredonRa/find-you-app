@@ -19,7 +19,7 @@ import { AuthProvider } from "./components/Auth";
 import PrivateRoute from "./components/PrivateRoute";
 import Desaparecidos from './components/Desaparecidos/Desaparecidos'
 import FormularioDesaparecidos from './components/Desaparecidos/FormularioDesaparecidos'
-import ConsumirAPI from './components/ConsumirAPI';
+import ConsumirAPI from './components/Desaparecidos/ConsumirAPI';
 import AboutUs from './components/AboutUs/AboutUs';
 import DemoUsuario from './components/DemoUsuario';
 

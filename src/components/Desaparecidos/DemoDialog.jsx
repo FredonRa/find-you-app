@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -17,9 +17,6 @@ import { blue } from '@material-ui/core/colors';
 import {Container} from '@material-ui/core'
 import DialogContent from '@material-ui/core/DialogContent';
 
-
-
-const emails = ['username@gmail.com', 'user02@gmail.com'];
 const useStyles = makeStyles({
   avatar: {
     backgroundColor: blue[100],
@@ -55,8 +52,7 @@ export default function SimpleDialogDemo({desaparecidos}) {
   const array = [desaparecidos]
   const [desaparecido] = array
   
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(emails[1]);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -64,7 +60,6 @@ export default function SimpleDialogDemo({desaparecidos}) {
 
   const handleClose = (value) => {
     setOpen(false);
-    setSelectedValue(value);
   };
 
   return (
@@ -75,7 +70,7 @@ export default function SimpleDialogDemo({desaparecidos}) {
         Más información
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} fullWidth className={classes.Dialog}>
-        <DialogTitle id="simple-dialog-title">Fecha: {desaparecido.fechaRegistro}</DialogTitle>
+        <DialogTitle id="simple-dialog-title">{desaparecido.fechaRegistro}</DialogTitle>
           
 
           <Container className={classes.containerDescripcion}>
@@ -88,14 +83,18 @@ export default function SimpleDialogDemo({desaparecidos}) {
               {desaparecido.nombre} {desaparecido.apellido}, 
               de aproximadamente {desaparecido.edad} años de edad,
               con apodo {desaparecido.apodo}, 
-              se perdió el (fecha) 
+              se perdió el {desaparecido.fechaDesaparicion}
             </Typography>
           </div>
           <div>
-            
+            <Typography variant="h6">
+              Provincia: {desaparecido.provincia}
+            </Typography>
           </div>
           <div>
-            
+          <Typography variant="h6">
+              Zona: {desaparecido.zona}
+            </Typography>
           </div>
           <div>
             <Typography variant="h6">

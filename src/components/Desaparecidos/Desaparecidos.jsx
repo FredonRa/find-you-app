@@ -80,7 +80,7 @@ const Desparecidos = () => {
     
       const ListaDesaparecidos = desaparecidos.length ? desaparecidos.map((desaparecido, index)=>{
         return (
-            <Grid item xs="12" sm="6" md="4" className={classes.gridDesaparecidos}>
+            <Grid item xs={12} sm={6} md={4} className={classes.gridDesaparecidos}>
                 <Grid container className={classes.gridContainer}>
                     <Card className={classes.Card}>
                         <CardActionArea>
@@ -94,7 +94,7 @@ const Desparecidos = () => {
                                 {desaparecido.nombre} {desaparecido.apellido}
                             </Typography>
                             <Typography variant="body2" color="textSecondary" component="p">
-                                Desaparecido desde (fecha de desaparición)
+                                Desaparecido desde {desaparecido.fechaDesaparicion}
                             </Typography>
                             </CardContent>
                         </CardActionArea>
