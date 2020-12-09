@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
+import {Link} from '@material-ui/core';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -72,9 +72,14 @@ const useStyles = makeStyles((theme) => ({
         borderRight: '2px solid gray',
         margin: '30px 0 30px 0',
       },
+      "&:hover": {
+        color: 'white',
+        transition: 'color .5s',
+      }
   },
   iconoContacto: {
       marginRight: '5px',
+
   },
 
   containerRedSocial: {
@@ -83,6 +88,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       justifyContent: 'center',
       color: 'gray',
+      "&:hover": {
+        color: 'white',
+        transition: 'color .5s',
+      }
   },
   tField: {
       color: 'white',
@@ -93,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: '12px',
       alignItems: 'center',
       borderTop: '2px solid gray',
-    
+
     },
     containerNewsletter: {
         marginTop: '20px',
@@ -105,6 +114,17 @@ const useStyles = makeStyles((theme) => ({
     containerEmail: {
       display: 'flex',
       justifyContent: 'center',
+    },
+    buttonEnviarEmail: {
+      color: 'white'
+    },
+    contactoLink: {
+      textDecoration: 'none',
+      color: 'gray',
+      "&:hover": {
+        color: 'white',
+        transition: 'color .5s',
+      }
     }
 
 }));
@@ -121,28 +141,25 @@ export default function StickyFooter() {
 
                 <Container className={classes.containerRedSocial}>
                     <FacebookIcon className={classes.iconoContacto} />
-                    <Typography>Facebook</Typography>
+                    <a href="https://www.facebook.com/" target="_blank" className={classes.contactoLink}>Facebook</a>
                 </Container>
 
                 <Container className={classes.containerRedSocial}>
                     <InstagramIcon className={classes.iconoContacto} />
-                    <Typography>Instagram</Typography>
+                    <a href="https://www.instagram.com/" target="_blank" className={classes.contactoLink}>Instagram</a>
                 </Container>
             </Container>
 
-            
-
             <Container className={classes.containerContacto}>
                 <Typography>Contacto</Typography>
-
                 <Container className={classes.containerRedSocial}>
                     <PhoneIcon className={classes.iconoContacto} />
-                    <Typography>(11) 4123-4123</Typography>
+                    <a href="tel:1141234123" target="_blank" className={classes.contactoLink}>(11) 4123-4123</a>
                 </Container>
 
                 <Container className={classes.containerRedSocial}>
                     <MailOutlineIcon className={classes.iconoContacto} />
-                    <Typography>findyou@info.com</Typography>
+                    <a href="mailto:findyou@info.com" target="_blank" className={classes.contactoLink}>findyou@info.com</a>
                 </Container>
             </Container>
 
@@ -156,7 +173,7 @@ export default function StickyFooter() {
                     variant="outlined"
                     color="secondary"
                     />
-                    <Button color='secondary'>Enviar</Button>
+                    <Button className={classes.buttonEnviarEmail}>Enviar</Button>
                 </Container>
             </Container>
 

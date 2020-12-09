@@ -56,10 +56,6 @@ const useStyles = makeStyles (theme => ({
     
 }))
 
-
-
-
-
 const Navbar = (props) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -78,6 +74,9 @@ const Navbar = (props) => {
 
     function handleSignOut() {
         firebaseConfig.authentication.signOut()
+        setTimeout(function() {
+            window.location.replace("/");
+        }, 500)
     }
 
     firebaseConfig.authentication.onAuthStateChanged(function(user) {
@@ -109,12 +108,23 @@ const Navbar = (props) => {
             // console.log(inicial)
             return (
                     <>
-                        {dato.nombre} {dato.apellido}
+                        <Typography>{dato.nombre} {dato.apellido}</Typography>
                     </>
             )
         }
         
     }) : <h1>Cargando..</h1> 
+
+    const LinkAdmin = datos.length ? datos.map((dato, index)=>{
+        if( emailUsuario === dato.email && dato.admin !== true){
+            return(<></>)
+        } else if (emailUsuario === dato.email && dato.admin === true) {
+            return (
+                <MenuItem onClick={handleClose}><Link to="administration" className={classes.LinkMenu}>Administración</Link></MenuItem>
+            )
+        }
+        
+    }) : <></> 
 
             
             const comprobarUsuario = () => {
@@ -132,14 +142,15 @@ const Navbar = (props) => {
                               open={Boolean(anchorEl)}
                               onClose={handleClose}
                             >
-                              <MenuItem onClick={handleClose}>{ListaDatos}</MenuItem>
+                              <MenuItem >{ListaDatos}</MenuItem>
                               <Divider />
                               <MenuItem onClick={handleClose}><Link to="/user" className={classes.LinkMenu}>Mi cuenta</Link></MenuItem>
+                              {/* {LinkAdmin} */}
                               <MenuItem onClick={handleClose, handleSignOut}><Link to="/login" className={classes.LinkMenu}>Cerrar sesión</Link></MenuItem>
                             </Menu>
                           </div>
                     )
-                }else {
+                }else{
                     return(
                         <Button><Link to="/login" className={classes.Link}>Iniciar sesión</Link></Button>
                         )

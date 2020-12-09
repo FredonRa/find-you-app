@@ -21,9 +21,9 @@ import Desaparecidos from './components/Desaparecidos/Desaparecidos'
 import FormularioDesaparecidos from './components/Desaparecidos/FormularioDesaparecidos'
 import ConsumirAPI from './components/Desaparecidos/ConsumirAPI';
 import AboutUs from './components/AboutUs/AboutUs';
-import DemoUsuario from './components/DemoUsuario';
+import Administracion from './components/Admin/Administración';
 import Usuario from './components/Usuario/Usuario';
-import DemoEditarDocumento from './components/DemoEditarDocumento';
+import Snackbar from './components/Desaparecidos/Snackbar'
 
 
 function App() {
@@ -40,14 +40,14 @@ function App() {
             <Route exact path="/missing" component={Desaparecidos}/>
             <Route exact path="/DemoAPI" component={ConsumirAPI}/>
             <Route exact path="/about-us" component={AboutUs}/>
-            <Route exact path="/DemoUsuario" component={DemoUsuario} />
+            <Route exact path="/administration" component={Administracion} />
             <Route exact path="/user" component={Usuario}/>
-
+            <Route exact path="/snackbar" component={Snackbar} />
           </div>
+        <StickyFooter/>
         </Router>
       </AuthProvider>
       <OcultarNavbar />
-      <StickyFooter/>
     </ThemeProvider>
   );
 }

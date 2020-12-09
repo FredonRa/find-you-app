@@ -91,19 +91,10 @@ export default function TemporaryDrawer() {
 
                 <ListItem button>
                     <ListItemIcon>
-                        <HomeIcon/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        <Link to="/" className={classes.Link}>About Us</Link>
-                    </ListItemText>            
-                </ListItem>
-
-                <ListItem button>
-                    <ListItemIcon>
                         <InfoIcon/>
                     </ListItemIcon>
                     <ListItemText>
-                        <Link to="/" className={classes.Link}>¿Qué hacer?</Link>
+                    <Link to="/about-us" className={classes.Link}>Sobre nosotros</Link>
                     </ListItemText>               
                 </ListItem>
 

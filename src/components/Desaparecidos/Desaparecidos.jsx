@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { Grid, Container } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SimpleDialogDemo from './DemoDialog'
+import ReportarAvistamiento from './ReportarAvistamiento'
 
 const useStyles = makeStyles({
   root: {
@@ -58,7 +59,8 @@ const useStyles = makeStyles({
 
 const Desparecidos = () => {
     const classes = useStyles();
-    const [desaparecidos, setDesaparecido] = useState([]);
+    const [desaparecidos, setDesaparecidos] = useState([]);
+    
     const [pending, setPending] = useState(true);
 
     useEffect(()=>{
@@ -66,19 +68,33 @@ const Desparecidos = () => {
         .onSnapshot((snapshot)=>{
           const data = [];
           snapshot.forEach((doc)=>{
-            data.push(doc.data());
-    
+            data.push({...doc.data(), id: doc.id});
           })
-          setDesaparecido([...data])        
+          setDesaparecidos([...data])      
           setPending(false)
         })
+
+      //   const obtenerDatos = async () => {
+      //     const data = await db.collection('desaparecidos-confirmados').get()
+      //     const arrayData = data.docs.map(doc => ({id: doc.id, ...doc.data()}))
+      //     setDesaparecidos(arrayData)
+      // }
+      // obtenerDatos();
       });
 
-    const handleClick = () =>{
-      <Redirect to="/"></Redirect>
-    }
+  //   useEffect(()=>{
+  //     const obtenerDatos = async () => {
+  //         const data = await db.collection('desaparecidos-confirmados').get()
+  //         const arrayData = data.docs.map(doc => ({id: doc.id, ...doc.data()}))
+  //         setDesaparecidos(arrayData)
+  //     }
+  //     obtenerDatos();  
+  // })
+
+
     
       const ListaDesaparecidos = desaparecidos.length ? desaparecidos.map((desaparecido, index)=>{
+        // console.log(desaparecido)
         return (
             <Grid item xs={12} sm={6} md={4} className={classes.gridDesaparecidos}>
                 <Grid container className={classes.gridContainer}>
@@ -87,7 +103,6 @@ const Desparecidos = () => {
                             <CardMedia
                             className={classes.media}
                             image={desaparecido.foto}
-                            onClick={handleClick}
                             />
                             <CardContent>
                             <Typography gutterBottom variant="h5" component="h2">
@@ -100,6 +115,9 @@ const Desparecidos = () => {
                         </CardActionArea>
                         <CardActions>
                             <SimpleDialogDemo desaparecidos={desaparecido}/>
+                            <ReportarAvistamiento desaparecidos={desaparecido}/>
+                        </CardActions>
+                        <CardActions>
                         </CardActions>
                       </Card>
                     </Grid>

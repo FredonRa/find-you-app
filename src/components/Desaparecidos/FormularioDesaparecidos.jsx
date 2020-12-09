@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import {makeStyles, TextField, Grid, Button, Typography, } from '@material-ui/core';
+import {makeStyles, TextField, Grid, Button, Typography, Container} from '@material-ui/core';
 import {db} from '../firebase'
 import {storage} from '../firebase'
 import firebaseConfig from '../firebase'
 import ConsumirAPI from './ConsumirAPI'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     containerForm: {
@@ -38,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
         marginTop: '20px',
         width: '100%', 
+        [theme.breakpoints.up('sm')] : {
+            width: '60%',
+        }
         // backgroundColor: 'pink'
     },
     containerFormP3: {
@@ -52,12 +57,19 @@ const useStyles = makeStyles((theme) => ({
     containerFormP2: {
         display: 'flex',
         justifyContent: 'center',
+        
     },
+    
     buttonSig: {
         display: 'flex',
         justifyContent: 'center',
     }
 }));
+
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const FormularioDesaparecidos = () => {
     const classes = useStyles();
@@ -68,11 +80,14 @@ const FormularioDesaparecidos = () => {
     const [descripcion, setDescripcion] = useState('')
     const [sexo, setSexo] = useState('');
     const [Imagen, setImagen] = useState(null);
-    const [url, setUrl] = useState(null)
+    const [urlFoto, setUrlFoto] = useState(null)
+    console.log(urlFoto)
+    const [mostrarSnackbar, setMostrarSnackbar] = useState(false)
     const [fechaDesaparicion, setFechaDesaparicion] = useState("")
     const [provincia, setProvincia] = useState('')
     const [zona, setZona] = useState('')
     const [emailUsuario, setEmailUsuario] = useState('')
+
     
 
     const handleChangeNombre = (e) => {
@@ -118,6 +133,8 @@ const FormularioDesaparecidos = () => {
         setZona(e.target.value)
     }
 
+
+
     firebaseConfig.authentication.onAuthStateChanged(function(user) {
         if (user) {
             setEmailUsuario(user.email);
@@ -143,40 +160,58 @@ const FormularioDesaparecidos = () => {
         }
     ]
 
-
-    const nuevoRegistro = () => {
+    const nuevoRegistro = async (e) => {
+        e.preventDefault();
         console.log("Visualizando los datos...")
-        const date = new Date();
-        const numeroDia = date.getDate();
-        const mes = date.getMonth();
-        const año = date.getFullYear();
-        const hora = date.getHours();
-        const minuto = date.getMinutes();
-        const segundo = date.getSeconds();
-        const fechaRegistro = `${numeroDia}/${mes}/${año} ${hora}:${minuto}:${segundo}`
+            const date = new Date();
+            const numeroDia = date.getDate();
+            const mes = date.getMonth();
+            const año = date.getFullYear();
+            const hora = date.getHours();
+            const minuto = date.getMinutes();
+            const segundo = date.getSeconds();
+            const meses = [
+                "Enero", "Febrero", "Marzo",
+                "Abril", "Mayo", "Junio", "Julio",
+                "Agosto", "Septiembre", "Octubre",
+                "Noviembre", "Diciembre"
+            ]
+            const fechaRegistro = `${numeroDia} de ${meses[mes]} del ${año} a las ${hora}:${minuto}:${segundo}`
+            console.log(fechaRegistro)
+            db.collection('desaparecidos').add({
+                emailUsuario: emailUsuario,
+                fechaRegistro: fechaRegistro,
+                nombre: nombre,
+                apellido: apellido,
+                apodo: apodo,
+                edad: age,
+                descripcion: descripcion,
+                sexo: sexo,
+                foto: urlFoto,
+                fechaDesaparicion: fechaDesaparicion,
+                provincia: provincia,
+                zona: zona
+            })
 
-        db.collection('desaparecidos').add({
-            emailUsuario: emailUsuario,
-            fechaRegistro: fechaRegistro,
-            nombre: nombre,
-            apellido: apellido,
-            apodo: apodo,
-            edad: age,
-            descripcion: descripcion,
-            sexo: sexo,
-            foto: url,
-            fechaDesaparicion: fechaDesaparicion,
-            provincia: provincia,
-            zona: zona
-        });
-        alert("Datos cargados con éxito.");
+            console.log("Datos cargados con éxito.");
+            setMostrarSnackbar(true)
+        
         setTimeout(function() {
             window.location.replace("/missing");
         }, 2000)
     }
 
+    const Snackbar = () => {
+        (mostrarSnackbar) ?
+        <div>
+            soy un snackbar
+        </div> 
+        : 
+        <></>
+    }
+
+
     const uploadImage = async (e) => {
-        e.preventDefault();
         const uploadTask = storage.ref(`images/${Imagen.name}`).put(Imagen)
         uploadTask.on(
             'state_changed',
@@ -189,20 +224,21 @@ const FormularioDesaparecidos = () => {
                     .ref('images')
                     .child(Imagen.name)
                     .getDownloadURL()
-                    .then(url => {
-                        setUrl(url)
-                        console.log(url)
+                    .then(url => {  
+                        setUrlFoto(url)
+                        console.log(urlFoto) 
                     })
             }
         )
 
-        setTimeout(function(){
-            (url === null) ?
-            alert("Ocurrió un error, vuelva a intentar por favor.") 
-            :(
-                nuevoRegistro()
-            )}, 4000)
-    };
+        // setTimeout(function(){
+        //     (urlFoto !== null) ?
+        //         nuevoRegistro()
+        //     :
+        //         alert("Ocurrió un error, intente nuevamente")
+        // }, 7000);
+    }
+
 
 
     const handleSiguiente = () => {
@@ -216,8 +252,10 @@ const FormularioDesaparecidos = () => {
     }
 
     const handleSiguiente2 = () => {
+        uploadImage()
         document.getElementById('paso2').style.display = 'none'
         document.getElementById('paso3').style.display = 'flex'
+        
     }
 
     const handleAtras2 = () => {
@@ -226,7 +264,8 @@ const FormularioDesaparecidos = () => {
     }
 
     return ( 
-        <form onSubmit={uploadImage}  className={classes.containerForm}>
+        <form onSubmit={nuevoRegistro}  className={classes.containerForm}>
+
             <Grid container spacing={3} className={classes.grid} id="paso1">
                 <Grid item xs={12}>
                     <Typography variant='h5' className={classes.tituloForm}>Paso 1</Typography>
@@ -245,7 +284,6 @@ const FormularioDesaparecidos = () => {
                     autoComplete="fname"
                     required
                     autoFocus
-                    
                     />
                 </Grid>
                 
@@ -323,14 +361,14 @@ const FormularioDesaparecidos = () => {
                 </Grid>
 
                 <Grid>
-                    <Button onClick={handleSiguiente} variant="contained" color="secondary">Siguiente</Button>
+                    <Button onClick={handleSiguiente} variant="contained">Siguiente</Button>
                 </Grid>
 
             </Grid>   
 
             <Grid container spacing={5} className={classes.grid, classes.containerPaso2} id='paso2'>
                 <Grid item xs={12} >
-                    <Button onClick={handleAtras} variant="contained" color="secondary">Atras</Button>
+                    <Button onClick={handleAtras} variant="contained" >Atras</Button>
                 </Grid>
                 <Grid item xs ={12} className={classes.containerFormP2}>
                     <Typography variant="h5">Paso 2</Typography>
@@ -343,13 +381,13 @@ const FormularioDesaparecidos = () => {
                     <input type="file" name="imagen" onChange={changeImagen} />
                 </Grid>
                 <Grid item xs={12} className={classes.buttonSig}>
-                    <Button onClick={handleSiguiente2} variant="contained" color="secondary">Siguiente</Button>
+                    <Button onClick={handleSiguiente2} variant="contained" >Siguiente</Button>
                 </Grid>
             </Grid>
 
-            <Grid container spacing={5} className={classes.grid, classes.containerPaso2} id='paso3'>
+            <Grid container spacing={5} className={classes.containerPaso2} id='paso3'>
                 <Grid item xs={12} >
-                    <Button onClick={handleAtras2} variant="contained" color="secondary">Atras</Button>
+                    <Button onClick={handleAtras2} variant="contained" >Atras</Button>
                 </Grid>
                 <Grid item xs ={12} className={classes.containerFormP2}>
                     <Typography variant="h5">Paso 3</Typography>
@@ -395,7 +433,9 @@ const FormularioDesaparecidos = () => {
                     <Grid item xs={12} className={classes.containerSubmit}>
                         <Button type="submit" variant="contained" color="primary" >Añadir registro</Button>
                     </Grid>
+                    {Snackbar()}
                 </Grid>
+                
             </Grid>
 
 
