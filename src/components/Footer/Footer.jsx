@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -8,7 +8,8 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 import PhoneIcon from '@material-ui/icons/Phone';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
+import {db} from '../firebase';
 
 function Copyright() {
   return (
@@ -131,6 +132,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function StickyFooter() {
   const classes = useStyles();
+  const [email, setEmail] = useState('');
+
+  const handleChangeEmail = (e) =>{
+    setEmail(e.target.value)
+  }
+
+  const subirEmail = async (e) => {
+    e.preventDefault();
+    db.collection('newsletter').add({
+        emailUsuario: email,     
+    })
+    setTimeout((function(){ window.location.replace("/"); }), 1000)
+  }
+
   return (
     <div className={classes.root}>
       <footer className={classes.footer}>
@@ -165,6 +180,7 @@ export default function StickyFooter() {
 
             <Container className={classes.containerNewsletter}>
                 <Typography>Suscribite a nuestro Newsletter</Typography>
+                  <form onSubmit={subirEmail}>
                 <Container className={classes.containerEmail}>
                     <TextField
                     className={classes.tField}
@@ -172,9 +188,13 @@ export default function StickyFooter() {
                     label="Email"   
                     variant="outlined"
                     color="secondary"
+                    onChange={handleChangeEmail}
+                    type="email"
+                    required
                     />
-                    <Button className={classes.buttonEnviarEmail}>Enviar</Button>
+                    <Button type="submit" className={classes.buttonEnviarEmail}>Enviar</Button>
                 </Container>
+                    </form>
             </Container>
 
             {/* <Typography variant="900">Proyecto para ComunidadIT</Typography> */}

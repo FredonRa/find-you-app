@@ -33,6 +33,7 @@ const useStyles = makeStyles({
   gridButton: {
     //   backgroundColor: 'blue',
       marginTop:'25px',
+      height: '50px',
       display: 'flex',
       justifyContent: 'center'
   },
@@ -54,6 +55,9 @@ const useStyles = makeStyles({
     // backgroundColor: 'pink',
     display: 'flex',
     justifyContent: 'center',
+  },
+  containerCards: {
+    minHeight: '500px'
   }
 });
 
@@ -64,7 +68,7 @@ const Desparecidos = () => {
     const [pending, setPending] = useState(true);
 
     useEffect(()=>{
-        db.collection("desaparecidos-confirmados")
+         db.collection("desaparecidos-confirmados")
         .onSnapshot((snapshot)=>{
           const data = [];
           snapshot.forEach((doc)=>{
@@ -73,29 +77,14 @@ const Desparecidos = () => {
           setDesaparecidos([...data])      
           setPending(false)
         })
-
-      //   const obtenerDatos = async () => {
-      //     const data = await db.collection('desaparecidos-confirmados').get()
-      //     const arrayData = data.docs.map(doc => ({id: doc.id, ...doc.data()}))
-      //     setDesaparecidos(arrayData)
-      // }
-      // obtenerDatos();
-      });
-
-  //   useEffect(()=>{
-  //     const obtenerDatos = async () => {
-  //         const data = await db.collection('desaparecidos-confirmados').get()
-  //         const arrayData = data.docs.map(doc => ({id: doc.id, ...doc.data()}))
-  //         setDesaparecidos(arrayData)
-  //     }
-  //     obtenerDatos();  
-  // })
-
-
-    
+      }, [desaparecidos]);
+      
       const ListaDesaparecidos = desaparecidos.length ? desaparecidos.map((desaparecido, index)=>{
-        // console.log(desaparecido)
-        return (
+        if(desaparecido.id === 'ppOqluxWc0WFFdyiP0ak') {
+          return <></>
+        } else{
+
+          return (
             <Grid item xs={12} sm={6} md={4} className={classes.gridDesaparecidos}>
                 <Grid container className={classes.gridContainer}>
                     <Card className={classes.Card}>
@@ -122,8 +111,8 @@ const Desparecidos = () => {
                       </Card>
                     </Grid>
                 </Grid>
-        ) 
-    }) : <Container className={classes.containerAviso}><h3>No hay Desaparecidos cargados</h3> </Container>
+        )}
+      }) : <Container className={classes.containerAviso}><h3>No hay Desaparecidos cargados</h3> </Container>
     
     if(pending){
         return <Container className={classes.containerProgress}>
@@ -131,15 +120,15 @@ const Desparecidos = () => {
               </Container>
     }
     return ( 
-        <Grid container spacing={2} >
-            <Grid item xs="12" className={classes.gridButton}>
+        <Grid container spacing={2} className={classes.containerCards}>
+            <Grid item xs={12} className={classes.gridButton}>
                 <Button variant="contained" color="primary">
                     <Link to="/missing/form" className={classes.Link}>
                         Reportar un desaparecido
                     </Link>
                 </Button>
-            </Grid>            
-            {ListaDesaparecidos}
+            </Grid>
+            {ListaDesaparecidos}         
         </Grid>
     );
 }

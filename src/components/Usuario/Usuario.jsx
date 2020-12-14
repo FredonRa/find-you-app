@@ -7,6 +7,9 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import ReportarBajaDesaparecido from './ReportarBajaDesaparecido'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyle = makeStyles(() => ({
     gridContainer: {
@@ -48,6 +51,20 @@ const useStyle = makeStyles(() => ({
         justifyContent: 'center'
 
     },
+    containerReportarBaja: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    containerProgress:{
+        display:'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    containerDesaparecidos: {
+        minHeight: '150px',
+        marginTop: '20px'
+    }
+
 }))
 
 
@@ -59,24 +76,36 @@ const Usuario = () => {
     const classes = useStyle()
 
     useEffect(()=>{
-        db.collection("desaparecidos")
-        .onSnapshot((snapshot)=>{
-          const data = [];
-          snapshot.forEach((doc)=>{
-            data.push(doc.data());
-          })
-          setDatos([...data])        
-        })
+        const listarDesaparecidos = () => {
+            db.collection("desaparecidos")
+            .onSnapshot((snapshot)=>{
+                const data = [];
+                snapshot.forEach((doc)=>{
+                    data.push({...doc.data(), id: doc.id});
+                })
+                setDatos([...data])        
+            })
+        }
+        
+        const listarDesaparecidosConfirmados = () => {
+            db.collection("desaparecidos-confirmados")
+            .onSnapshot((snapshot)=>{
+                const data = [];
+                snapshot.forEach((doc)=>{
+                    data.push({...doc.data(), id: doc.id});
+                })
+                setDatos2([...data])        
+            })
+        }
 
-        db.collection("desaparecidos-confirmados")
-        .onSnapshot((snapshot)=>{
-          const data = [];
-          snapshot.forEach((doc)=>{
-            data.push(doc.data());
-          })
-          setDatos2([...data])        
-        })
-    });
+        const unSuscribe = {
+            listarDesaparecidos: listarDesaparecidos(),
+            listarDesaparecidosConfirmados: listarDesaparecidosConfirmados()
+        }
+        
+        return unSuscribe
+
+    }, [datos, datos2]);
 
 
 
@@ -109,13 +138,16 @@ const Usuario = () => {
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
+                        
                       </Card>
                     </Grid>
                 </Grid>
             )
         }
         
-    }) : <h1>Cargando..</h1> 
+    }) : <Container className={classes.containerProgress}>
+            <CircularProgress/>
+        </Container>
 
     const ListaDatos2 = datos2.length ? datos2.map((dato, index)=>{
         if(emailUsuario === dato.emailUsuario) {
@@ -148,6 +180,9 @@ const Usuario = () => {
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
+                        <Container className={classes.containerReportarBaja}>
+                            <ReportarBajaDesaparecido dato={dato}/>
+                        </Container>
                       </Card>
                     </Grid>
                 </Grid>
@@ -171,7 +206,9 @@ const Usuario = () => {
             )
         }
         
-    }) : <h1>Cargando..</h1>
+    }) : <Container className={classes.containerProgress}>
+            <CircularProgress/>
+        </Container>
 
     firebaseConfig.authentication.onAuthStateChanged(function(user) {
         if (user) {
@@ -181,14 +218,19 @@ const Usuario = () => {
 
     return ( 
         <Grid container spacing={3} className={classes.containerDesaparecidosCargados}>
-            <Grid item xs={12} className={classes.titulo}>
-                <Typography variant="h5">Desaparecidos sin confirmar</Typography>
+            <Grid container spacing={3} className={classes.containerDesaparecidos}>
+                <Grid item xs={12} className={classes.titulo}>
+                    <Typography variant="h5">Desaparecidos sin confirmar</Typography>
+                </Grid>
+                {ListaDatos}
             </Grid>
-            {ListaDatos}
-            <Grid item xs={12} className={classes.titulo}>
-                <Typography variant="h5">Desaparecidos confirmados</Typography>
+
+            <Grid container spacing={3} className={classes.containerDesaparecidos}>  
+                <Grid item xs={12} className={classes.titulo}>
+                    <Typography variant="h5">Desaparecidos confirmados</Typography>
+                </Grid>
+                {ListaDatos2}
             </Grid>
-            {ListaDatos2}
         </Grid>
     );
 }

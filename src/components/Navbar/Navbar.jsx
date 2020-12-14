@@ -117,10 +117,11 @@ const Navbar = (props) => {
 
     const LinkAdmin = datos.length ? datos.map((dato, index)=>{
         if( emailUsuario === dato.email && dato.admin !== true){
+            document.getElementById("menuItem").style.display = "none";
             return(<></>)
         } else if (emailUsuario === dato.email && dato.admin === true) {
             return (
-                <MenuItem onClick={handleClose}><Link to="administration" className={classes.LinkMenu}>Administración</Link></MenuItem>
+                <Link to="administration" className={classes.LinkMenu}>Administración</Link>
             )
         }
         
@@ -131,7 +132,7 @@ const Navbar = (props) => {
                 if(usuario) {
                     return(
                             <div className={classes.containerAvatar}>
-                                
+                            
                             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                                 <Avatar className={classes.Avatar}>U</Avatar>
                             </Button>
@@ -145,7 +146,7 @@ const Navbar = (props) => {
                               <MenuItem >{ListaDatos}</MenuItem>
                               <Divider />
                               <MenuItem onClick={handleClose}><Link to="/user" className={classes.LinkMenu}>Mi cuenta</Link></MenuItem>
-                              {/* {LinkAdmin} */}
+                              <MenuItem onClick={handleClose} id="menuItem"> {LinkAdmin} </MenuItem>
                               <MenuItem onClick={handleClose, handleSignOut}><Link to="/login" className={classes.LinkMenu}>Cerrar sesión</Link></MenuItem>
                             </Menu>
                           </div>

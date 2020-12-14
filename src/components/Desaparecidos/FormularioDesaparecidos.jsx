@@ -4,8 +4,9 @@ import {db} from '../firebase'
 import {storage} from '../firebase'
 import firebaseConfig from '../firebase'
 import ConsumirAPI from './ConsumirAPI'
-import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles((theme) => ({
     containerForm: {
@@ -63,7 +64,13 @@ const useStyles = makeStyles((theme) => ({
     buttonSig: {
         display: 'flex',
         justifyContent: 'center',
-    }
+    },
+    containerProgress:{
+        display:'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '60vh'
+    },
 }));
 
 
@@ -87,6 +94,7 @@ const FormularioDesaparecidos = () => {
     const [provincia, setProvincia] = useState('')
     const [zona, setZona] = useState('')
     const [emailUsuario, setEmailUsuario] = useState('')
+    const [pending, setPending] = useState(false)
 
     
 
@@ -162,6 +170,7 @@ const FormularioDesaparecidos = () => {
 
     const nuevoRegistro = async (e) => {
         e.preventDefault();
+        setPending(true)
         console.log("Visualizando los datos...")
             const date = new Date();
             const numeroDia = date.getDate();
@@ -177,7 +186,7 @@ const FormularioDesaparecidos = () => {
                 "Noviembre", "Diciembre"
             ]
             const fechaRegistro = `${numeroDia} de ${meses[mes]} del ${año} a las ${hora}:${minuto}:${segundo}`
-            console.log(fechaRegistro)
+            
             db.collection('desaparecidos').add({
                 emailUsuario: emailUsuario,
                 fechaRegistro: fechaRegistro,
@@ -201,14 +210,6 @@ const FormularioDesaparecidos = () => {
         }, 2000)
     }
 
-    const Snackbar = () => {
-        (mostrarSnackbar) ?
-        <div>
-            soy un snackbar
-        </div> 
-        : 
-        <></>
-    }
 
 
     const uploadImage = async (e) => {
@@ -261,6 +262,12 @@ const FormularioDesaparecidos = () => {
     const handleAtras2 = () => {
         document.getElementById('paso2').style.display = 'flex'
         document.getElementById('paso3').style.display = 'none'
+    }
+
+    if(pending){
+        return <Container className={classes.containerProgress}>
+                  <CircularProgress/>
+              </Container>
     }
 
     return ( 
@@ -433,7 +440,7 @@ const FormularioDesaparecidos = () => {
                     <Grid item xs={12} className={classes.containerSubmit}>
                         <Button type="submit" variant="contained" color="primary" >Añadir registro</Button>
                     </Grid>
-                    {Snackbar()}
+                    
                 </Grid>
                 
             </Grid>

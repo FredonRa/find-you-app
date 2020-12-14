@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const SolicitudAprobacion = () => {
+const SolicitudAprobacion = ({setDatosPersona}) => {
     const classes = useStyles()
     const [datos, setDatos] = useState([]);
     const [emailUsuario, setEmailUsuario] = useState()
@@ -79,32 +79,46 @@ const SolicitudAprobacion = () => {
     const [pending, setPending] = useState(true);
 
     useEffect(()=>{
-        db.collection("usuarios")
-        .onSnapshot((snapshot)=>{
-          const data = [];
-          snapshot.forEach((doc)=>{
-            data.push(doc.data());
-          });
-          setDatos([...data])           
-        });
-
-        const obtenerDatos = async () => {
-            const data = await db.collection('desaparecidos').get()
-            const arrayData = data.docs.map(doc => ({id: doc.id, ...doc.data()}))
-            setPersonas(arrayData)
+        const obtenerUsuarios = () =>{
+            db.collection("usuarios")
+            .onSnapshot((snapshot)=>{
+                const data = [];
+                snapshot.forEach((doc)=>{
+                    data.push(doc.data());
+                });
+                setDatos([...data])
+                setPending(false)           
+            });
         }
-        obtenerDatos();      
-    });
+            
+        const obtenerDatos = () => {
+            db.collection("desaparecidos")
+            .onSnapshot((snapshot)=>{
+                const data = [];
+                snapshot.forEach((doc)=>{
+                    data.push({...doc.data(), id: doc.id});
+                });
+                setPersonas([...data])      
+                setPending(false)     
+            });
+        }
 
-    const redireccionar = () => {
-        window.location.replace("/DemoUsuario")
-    }
+        const unSuscribe = {
+            obtenerUsuarios: obtenerUsuarios(),
+            obtenerDatos: obtenerDatos()
+        }
+
+        return unSuscribe;
+
+    }, [datos, personas]);
+
 
     const eliminar = async (id) => {
         try {
         await db.collection('desaparecidos').doc(id).delete()
         const arrayFiltrado = personas.filter(persona => persona.id !== id)
         setPersonas(arrayFiltrado);
+        setPending(true)
         // setTimeout(redireccionar, 1000);
         } catch (error) {
         console.log(error)
@@ -116,6 +130,12 @@ const SolicitudAprobacion = () => {
             setEmailUsuario(user.email);
         }
     });
+
+    if(pending){
+        return <Container className={classes.containerProgress}>
+                  <CircularProgress/>
+              </Container>
+    }
 
     const ListaDesaparecidos = personas.length ? personas.map((persona, index)=>{
         const EnviarRegistro = () => {
@@ -134,11 +154,15 @@ const SolicitudAprobacion = () => {
                 provincia: `${persona.provincia}`,
                 zona: `${persona.zona}`
             })
+            setPending(true)
             eliminar(persona.id)            
-        }
+        } 
+        if(persona.id === "RHaHipZzVEsyJbnHQ1Ar"){
+          return (<></>)  
+        } else {
 
-        return (
-            <Grid item xs={12} sm={6} md={4} >
+            return (
+                <Grid item xs={12} sm={6} md={4} >
                 <Grid container className={classes.gridContainer}>
                     <Card className={classes.Card}>
                     <Typography gutterBottom component="h2">
@@ -175,6 +199,7 @@ const SolicitudAprobacion = () => {
                     </Grid>
                 </Grid>            
         ) 
+    }
     }) : <Container className={classes.containerAviso}><h3>No hay desaparecidos cargados</h3> </Container>
 
     const ListaDatos = datos.length ? datos.map((dato, index)=>{
@@ -184,7 +209,7 @@ const SolicitudAprobacion = () => {
             // {setPending(false)}
             return (
                 <Grid container spacing={2} className={classes.containerLista}>
-                    <Container className={classes.containerTitulo}>
+                    <Container >
                         <Typography variant="h6" >Solicitudes de aprobación</Typography>
                     </Container>
                     {ListaDesaparecidos}
@@ -194,9 +219,10 @@ const SolicitudAprobacion = () => {
     }) : <h1>Cargando..</h1> 
 
     return (
-        <div className={classes.containerListaDatos}> 
-            {ListaDatos}
-        </div> 
+        <Grid container className={classes.containerListaDatos}> 
+            <Container className={classes.containerTitulo}><Typography variant="h5">Solicitudes de aprobación</Typography></Container>
+            {ListaDesaparecidos}
+        </Grid> 
         
     );
 }

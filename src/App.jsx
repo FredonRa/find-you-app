@@ -23,7 +23,6 @@ import ConsumirAPI from './components/Desaparecidos/ConsumirAPI';
 import AboutUs from './components/AboutUs/AboutUs';
 import Administracion from './components/Admin/Administración';
 import Usuario from './components/Usuario/Usuario';
-import Snackbar from './components/Desaparecidos/Snackbar'
 
 
 function App() {
@@ -42,7 +41,6 @@ function App() {
             <Route exact path="/about-us" component={AboutUs}/>
             <Route exact path="/administration" component={Administracion} />
             <Route exact path="/user" component={Usuario}/>
-            <Route exact path="/snackbar" component={Snackbar} />
           </div>
         <StickyFooter/>
         </Router>
