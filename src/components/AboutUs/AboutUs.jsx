@@ -5,29 +5,35 @@ const useStyles = makeStyles((theme) => ({
     containerFoto: {
         display: 'flex',
         justifyContent: 'center',
-        backgroundColor: 'black',
+        // backgroundColor: 'black',
+    },
+    containerTexto: {
+        display: 'flex',
+        justifyContent: 'center',
     },
     texto: {
-        padding: '10px'
+        padding: '10px',
+        width: '70%'
     },
     tituloTexto: {
         display: 'flex',
         justifyContent: 'center',
+        // backgroundColor: 'blue'
     }
 }))
 
 const AboutUs = () => {
     const classes = useStyles();
     return ( 
-        <Grid container>
+        <Grid container className={classes.containerTexto}>
             {/* <Grid item xs={6} className={classes.containerFoto}>
                 <img src={logo23} alt="Logo de Find You"/>
             </Grid> */}
-            <Grid item xs={12} className={classes.texto}>
+            <Grid container className={classes.texto}>
                 <Grid container className={classes.tituloTexto}>
-                    <Typography variant="h4">¿Qué es Find You?</Typography>
+                    <Typography variant="h4" >¿Qué es Find You?</Typography>
                 </Grid>
-                <Typography>Find you (Encontrarte) es una aplicación
+                <Typography >Find you (Encontrarte) es una aplicación
                 web de personas desaparecidas. En la
                 misma podras cargar datos de una
                 persona, consultarlos y darlos de baja.
@@ -36,7 +42,7 @@ const AboutUs = () => {
                 ellos e informar algún avistamiento si
                 ese es el caso.</Typography>
             </Grid>
-            <Grid container>
+            <Grid container className={classes.tituloTexto}>
                     <Typography variant="h5">Nuesta misión</Typography>
             </Grid>
             <Grid container className={classes.texto}>

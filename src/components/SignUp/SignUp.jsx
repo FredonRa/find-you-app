@@ -4,6 +4,8 @@ import firebaseConfig from "../firebase";
 import {db} from "../firebase"
 import {makeStyles, Button, Container, TextField, Grid} from '@material-ui/core';
 import {Link} from 'react-router-dom'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +41,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       textDecoration: 'underline'
     }
+  },
+  containerProgress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '90vh',
   }
 }))
 
@@ -48,35 +56,35 @@ const SignUp = ({ history }) => {
   const [nombre, setNombre] = useState(null);
   const [apellido, setApellido] = useState(null);
   const [email, setEmail] = useState(null)
+  const [pending, setPending] = useState(false)
   
   const nuevoRegistro = () => {
     console.log("Visualizando los datos...")
-    if(nombre === null || apellido === null || email === null) {
-      alert("Introduzca los datos que faltan")
-    } else {
-      db.collection('usuarios-registrados').add({
-        fechaRegistro: Date(),
+    // if(nombre === null || apellido === null || email === null) {
+    //   alert("Introduzca los datos que faltan")
+    // } else {
+      db.collection('usuarios').add({
         nombre: nombre,
         apellido: apellido,
         email: email,
         admin: false
       })
-    }
+    // }
   }
   
   const handleNombre = (e) => {
     setNombre(e.target.value);
-    console.log(nombre)
+    // console.log(nombre)
   }
 
   const handleApellido = (e) => {
     setApellido(e.target.value);
-    console.log(apellido)
+    // console.log(apellido)
   }
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    console.log(email)
+    // console.log(email)
   }
   
   
@@ -84,16 +92,25 @@ const SignUp = ({ history }) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     try {
+      setPending(true);
       await firebaseConfig
       .authentication
       .createUserWithEmailAndPassword(email.value, password.value);
       history.push("/");
     } catch (error) {
+      setPending(false);
       alert(error);
     }
 
   }, [history]);
   
+  if(pending) {
+    return(
+      <Container className={classes.containerProgress}>
+        <CircularProgress />
+      </Container>
+    )
+  }
 
 
   return (
@@ -165,7 +182,7 @@ const SignUp = ({ history }) => {
           <Button type="submit" variant="contained" color="primary" fullWidth className={classes.buttonSubmit} onClick={nuevoRegistro}>Sign Up</Button>
         </Container>
         <Container className={classes.containerLink}>
-          <Link to="/login" className={classes.Link}>¿Ya tenes cuenta? Click aquí</Link>
+          <Link to="/login" className={classes.Link}>¿Ya tenes cuenta? Inicia sesión</Link>
         </Container>
       </form>
     </Container>

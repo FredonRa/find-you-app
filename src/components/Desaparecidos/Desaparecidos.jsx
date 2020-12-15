@@ -61,7 +61,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Desparecidos = () => {
+const Desaparecidos = () => {
     const classes = useStyles();
     const [desaparecidos, setDesaparecidos] = useState([]);
     
@@ -133,4 +133,4 @@ const Desparecidos = () => {
     );
 }
  
-export default Desparecidos;
+export default Desaparecidos;
